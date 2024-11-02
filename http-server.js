@@ -1,30 +1,14 @@
-/**
- * @license
- * Copyright 2024 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+import dotenv from 'dotenv';
+dotenv.config();
 import fs from "fs";
 import http from "http";
 import path from "path";
 import url from "url";
 
-// Local port for http server to listen on
-const PORT = 9000;
+// Use PORT from .env if provided, otherwise default to 9000
+const PORT = process.env.PORT || 9000;
 
-// Get your API key from https://makersuite.google.com/app/apikey
-// Access your API key as an environment variable
+// Get API key from .env
 const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {

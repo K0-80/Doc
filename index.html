@@ -1,20 +1,3 @@
-<!doctype html>
-<!--
- * @license
- * Copyright 2024 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
--->
 <html>
   <head>
     <meta charset="utf-8" />
@@ -25,67 +8,105 @@
       rel="stylesheet"
       type="text/css"
     />
-    <title>Generative AI - Text and Image</title>
+    <title>K0 <3</title>
   </head>
 
   <body>
-    <header>Generative AI - Text and Image</header>
-    <div class="form-container">
+    <header>Google docs Orginzer</header>
+    <div class="form-container collapsed">
       <form id="form">
-        <input type="file" id="file'" multiple />
-        <input id="prompt" />
-        <button type="submit">Send</button>
+        <div class="textarea-group">
+          <textarea 
+            id="context" 
+            placeholder="put CONTEXT here, like what the assingment is (removing not relevent stuff will give better resaults), for example: 
+            
+Each person in your group will sign up for one of the questions below and you will be responsible for running a 5-minute seminar with technology, teaching your group about your insight to your assigned question. For all seminars, you must include 2 proofs from your novel and 1 external credible source (research for connections).
+            
+u most likely wanna remove the Each person in your group part for better resaults"
+            autocomplete="off"
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="textarea-group">
+          <textarea 
+            id="rubric" 
+            placeholder="put RUBRIC here. Should look something along the lines of 
+
+Curriculum Connection | yap yap yap
+Look Fors             | yap yap yap
+Comments              | yap yap yap
+Mark /10              | yap yap yap
+
+just ctrl c ctrl v the entire thing in here... formating dosnt matter that much"
+            autocomplete="off"
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="textarea-group">
+          <textarea 
+            id="assignment" 
+            placeholder="put ur doc in here. this is where i steal all ur work to train my orginzer (calm down its a joke i really dont want ur 50% ahh essay) 
+            
+anyways if ur ruberic says something like correct sitation then u goto copy that in here as well and make sure formating here is somewhat decent  else orginzer will kinda kill itself
+
+also quick reminder that the best way to get 100% is just keep bothering ur teacher. ask them if theres any changes u should make, slap everything here, put changes to make in CONTEXT and orginzer will orginze ur doc for u"
+            autocomplete="off"
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="button-group">
+          <button type="submit" class="organize-button">Organize</button>
+        </div>
       </form>
-      <div id="thumbnails"></div>
+      <button id="toggle-form-size" class="toggle-button">
+        <span class="arrow">↕</span>
+      </button>
     </div>
     <div class="container">
       <blockquote id="result"></blockquote>
+      <div class="debug-container">
+        <h3>Debug Output:</h3>
+        <blockquote id="debug-result"></blockquote>
+      </div>
     </div>
 
     <script type="module">
       import {
         getGenerativeModel,
-        fileToGenerativePart,
         updateUI,
       } from "./utils/shared.js";
 
-      async function run(prompt, files) {
-        const imageParts = await Promise.all(
-          [...files].map(fileToGenerativePart),
-        );
-
+      async function run(prompt) {
         const model = await getGenerativeModel({
-          model: "gemini-1.5-flash",
+          model: "gemini-1.5-pro",
         });
 
-        return model.generateContentStream([...imageParts, prompt]);
+        return model.generateContentStream([prompt]);
       }
-
-      const fileInputEl = document.querySelector("input[type=file]");
-      const thumbnailsEl = document.querySelector("#thumbnails");
-
-      fileInputEl.addEventListener("input", () => {
-        thumbnailsEl.innerHTML = "";
-        for (const file of fileInputEl.files) {
-          const url = URL.createObjectURL(file);
-          thumbnailsEl.innerHTML += `<img class="thumb" src="${url}" onload="window.URL.revokeObjectURL(this.src)" />`;
-        }
-      });
 
       document
         .querySelector("#form")
         .addEventListener("submit", async (event) => {
           event.preventDefault();
 
-          const promptEl = document.querySelector("#prompt");
+          const contextEl = document.querySelector("#context");
+          const rubricEl = document.querySelector("#rubric");
+          const assignmentEl = document.querySelector("#assignment");
           const resultEl = document.querySelector("#result");
+
+          if (!contextEl.value.trim() || !rubricEl.value.trim() || !assignmentEl.value.trim()) {
+            return;
+          }
+
+          const combinedPrompt = `Context: ${contextEl.value}\n\nRubric: ${rubricEl.value}\n\nAssignment: ${assignmentEl.value}\n\nPlease evaluate this assignment based on the provided context and rubric.`;
 
           updateUI(
             resultEl,
-            () => run(promptEl.value, fileInputEl.files),
+            () => run(combinedPrompt),
             true,
           );
         });
     </script>
+    <footer> Version: 1.0  · discord: k08. (eventually gonna make server) · feel free to dm and ask questions, suggest features, or join me (please bro i have so many ideas yet so littl time) </footer>
   </body>
 </html>
