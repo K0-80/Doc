@@ -1,20 +1,3 @@
-/**
- * @license
- * Copyright 2024 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 import { marked } from "https://esm.run/marked";
 
@@ -166,6 +149,18 @@ document
   .querySelector("#form")
   .addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    // Disable the submit button for 5 seconds
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = "calm down"; // Change button text
+    submitButton.classList.add('disabled-button'); // Add a class for styling
+
+    setTimeout(() => {
+      submitButton.disabled = false;
+      submitButton.textContent = "Organze"; // Reset button text
+      submitButton.classList.remove('disabled-button'); // Remove the class
+    }, 5000);
 
     const contextEl = document.querySelector("#context");
     const rubricEl = document.querySelector("#rubric");

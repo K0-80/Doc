@@ -315,3 +315,9 @@ h2 {
 #result:empty {
   display: none;
 }
+
+.disabled-button {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
