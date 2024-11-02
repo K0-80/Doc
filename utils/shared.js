@@ -26,7 +26,7 @@ import { marked } from "https://esm.run/marked";
  */
 export async function getGenerativeModel(params) {
   // Fetch API key from server
-  const API_KEY = await (await fetch("API_KEY")).text();
+  const API_KEY = "AIzaSyDq2Rl6CQ-OQu12PQB0_RPKt_lyzY0Wz1s"; // Set API key directly
   const genAI = new GoogleGenerativeAI(API_KEY);
   
   const model = genAI.getGenerativeModel({
@@ -126,9 +126,14 @@ export async function updateUI(resultEl, getResult, streaming) {
 
     resultEl.className = "";
   } catch (err) {
-    text = "\n\n> heyyyyy ur not meant to see this... how tf did u break the api stop using it for a bit maybe it will fix itsself ";
-    debugEl.innerText = err.toString();
-    resultEl.className = "error";
+    const errorMessage = err.toString();
+    if (errorMessage.startsWith("Error")) {
+      text = "\n\n> heyyyyy ur not meant to see this... how tf did u break the api stop using it for a bit maybe it will fix itsself ";
+    } else {
+      text = errorMessage; // Use the actual error message for other cases
+    }
+    debugEl.innerText = text;
+    resultEl.className = "Error";
   }
 }
 
