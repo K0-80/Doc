@@ -9,7 +9,9 @@ import { marked } from "https://esm.run/marked";
  */
 export async function getGenerativeModel(params) {
   // Fetch API key from server
-  const API_KEY = await (await fetch("API_KEY")).text();
+  const API_KEY = "AIzaSyDq2Rl6CQ-OQu12PQB0_RPKt_lyzY0Wz1s";
+
+  // const API_KEY = await (await fetch("API_KEY")).text(); so hi if ur looking at this leave my api key alone ty <3 am too imcoptent to set up backend auith thing
 
   const genAI = new GoogleGenerativeAI(API_KEY);
   
